@@ -3,11 +3,10 @@ package goconf
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/MetaerMarket/goconf/category"
 	"os"
 	"path"
 	"strings"
-
-	"github.com/MetaerMarket/goconf/category"
 )
 
 type CfgFile struct {
