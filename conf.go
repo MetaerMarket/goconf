@@ -1,9 +1,3 @@
-/*
- * @Author: ww
- * @Date: 2022-07-03 17:35:13
- * @Description:
- * @FilePath: /goconf/conf.go
- */
 package goconf
 
 import (
@@ -13,15 +7,15 @@ import (
 	"path"
 	"strings"
 
-	"github.com/uerax/goconf/category"
+	"github.com/MetaerMarket/goconf/category"
 )
 
 type CfgFile struct {
 	//mx 		sync.Mutex
-	Path	string
-	File	string
-	Data	map[string]interface{}
-	tmp		map[string]interface{}
+	Path string
+	File string
+	Data map[string]interface{}
+	tmp  map[string]interface{}
 }
 
 func (t *CfgFile) New() {
@@ -31,7 +25,7 @@ func (t *CfgFile) New() {
 /*
 * read all configuration file on this path
 * @param path string 文件目录
-*/
+ */
 func (t *CfgFile) ReadFiles(path string) error {
 	files, err := os.Stat(path)
 	if err != nil {
@@ -46,7 +40,7 @@ func (t *CfgFile) ReadFiles(path string) error {
 	if err != nil {
 		return fmt.Errorf("文件目录打开出错 : %v", err)
 	}
-	
+
 	for _, file := range dir {
 		p := path + "/" + file.Name()
 		t.ReadFiles(p)
@@ -59,17 +53,17 @@ func (t *CfgFile) ReadFiles(path string) error {
 /*
 * if you just have one configuration file, that you can use this method
 * @param file string 配置文件绝对路径或者相对路径
-*/
+ */
 func (t *CfgFile) ReadConfig(file string) error {
-	
+
 	f, err := os.Stat(file)
-	
+
 	if err != nil || f.IsDir() {
 		return fmt.Errorf("配置文件或者文件夹不存在 : %v", err)
 	}
-	
+
 	ext := strings.ToLower(path.Ext(file))
-	
+
 	switch ext {
 	case ".yaml":
 		data, err := category.ReadYaml(file, struct{}{})
@@ -115,8 +109,8 @@ func (t *CfgFile) ReadConfig(file string) error {
 * @param section string "section:如果没有可以不填"
 * @param key	string	"key:必填的参数key"
 * @return value interface{} "value: 自行转换成 string|slice|map 等类型"
-*/
-func (t *CfgFile) GetValue(in... string) interface{} {
+ */
+func (t *CfgFile) GetValue(in ...string) interface{} {
 	if len(in) < 1 {
 		return nil
 	}
@@ -136,7 +130,7 @@ func (t *CfgFile) GetValue(in... string) interface{} {
 				// 无法转换证明已经没有下一层
 				if _, ok := v.(map[string]interface{}); !ok {
 					// 非最后一个key但是已经没有下一层证明不在该文件里
-					if i + 1 != len(in) {
+					if i+1 != len(in) {
 						break
 					}
 					return v
@@ -145,7 +139,6 @@ func (t *CfgFile) GetValue(in... string) interface{} {
 			}
 		}
 	}
-	
 
 	return nil
 }
@@ -153,7 +146,7 @@ func (t *CfgFile) GetValue(in... string) interface{} {
 /*
 * @param filename string 文件名
 * @param obj interface{} 转换的结构体
-*/
+ */
 func (t *CfgFile) Unmarshal4Name(name string, obj interface{}) error {
 	if v, ok := t.Data[name]; ok {
 		b, err := json.Marshal(v)
@@ -166,7 +159,7 @@ func (t *CfgFile) Unmarshal4Name(name string, obj interface{}) error {
 		}
 		return nil
 	}
-	return fmt.Errorf("%s 文件不存在", name) 
+	return fmt.Errorf("%s 文件不存在", name)
 }
 
 func (t *CfgFile) Reload() error {

@@ -1,4 +1,4 @@
-module github.com/uerax/goconf
+module github.com/MetaerMarket/goconf
 
 go 1.18
 

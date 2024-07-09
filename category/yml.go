@@ -1,9 +1,3 @@
-/*
- * @Author: ww
- * @Date: 2022-07-03 18:06:03
- * @Description:
- * @FilePath: /goconf/category/yml.go
- */
 package category
 
 import (

@@ -1,9 +1,3 @@
-/*
- * @Author: ww
- * @Date: 2022-07-04 01:18:38
- * @Description:
- * @FilePath: /goconf/category/json.go
- */
 package category
 
 import (
@@ -12,7 +6,7 @@ import (
 )
 
 func ReadJson(file string, obj interface{}) (interface{}, error) {
-	
+
 	b, err := os.ReadFile(file)
 	if err != nil {
 		return nil, err
@@ -25,4 +19,3 @@ func ReadJson(file string, obj interface{}) (interface{}, error) {
 
 	return obj, nil
 }
-
